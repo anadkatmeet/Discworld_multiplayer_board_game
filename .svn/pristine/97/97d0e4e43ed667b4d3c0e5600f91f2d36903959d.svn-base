@@ -1,0 +1,43 @@
+package JUnit;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+import source.CityArea;
+import source.Helper;
+import source.MapBoard;
+import source.Player;
+
+/**
+ * 
+ * @author c_sarvai
+ *
+ *<p>
+ *Junit test class to add building in specified condition.
+ *If there is more than one minion in a city area, it must have trouble marker.
+ *Player can't add a building in that area which area has trouble maker.
+ *Trouble maker can be removed if one of all minions is removed.
+ *Here, two minions are added and that's why there would be one trouble maker in area.
+ *Hence, Player can't add a building.
+ *<br/>
+ *<br/>
+ *Checking whether number of buildings is 0 or what.
+ *</p>
+ */
+
+public class WontAddBuildingIfThereIsTM {
+
+	@Test
+	public void test() {
+		MapBoard board=new MapBoard();
+		Player p=new Player(board);
+		Helper.playerList.add(p);
+		CityArea tempCA=board.cityAreaObejctList.get(11);
+		
+		tempCA.addMinion(p.getColor());tempCA.addMinion(p.getColor());
+		tempCA.addBuilding(p.getColor());
+		assertEquals("none", tempCA.getBuilding());
+	}
+
+}

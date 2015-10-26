@@ -1,0 +1,66 @@
+package JUnit;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+import source.CityArea;
+import source.Helper;
+import source.MapBoard;
+import source.Player;
+
+/**
+ * 
+ * @author c_sarvai
+ *
+ *<p>
+ *Junit test class to check winning conditions for <b>Lord Vetinari</b> personality card.
+ *</br></br>
+ *<b>
+ *Condition:
+ *
+ *If at the start of your turn you have minions in a certain number of areas then you win the game immediately.
+ *With two players you need eleven areas, with three players you need ten areas, and with four players
+ *you need nine areas.
+ *</b>
+ *</br></br>
+ *
+ *<br/>
+ *Checking whether winning condition of that player is true or what.
+ *</p>
+ */
+public class WCforMinionControl {
+
+	@Test
+	public void test() {
+		MapBoard board=new MapBoard();
+		Player p=new Player(board);
+		Player p1=new Player(board);
+		Helper.playerList.add(p);
+		Helper.playerList.add(p1);
+		Player p2=new Player(board);
+		Player p3=new Player(board);
+		Helper.playerList.add(p2);
+		Helper.playerList.add(p3);
+		
+		for (int i = 0; i < Helper.personalitySet.size(); i++) {
+			if (Helper.personalitySet.get(i).cardName.equals("Lord Vetinari")) {
+				p.setPersonalityCard(Helper.personalitySet.get(i));
+				break;
+			}
+		}
+		for (int i = 0; i < board.cityAreaObejctList.size(); i++) {
+			if (board.cityAreaObejctList.get(i).minions.get(p.getColor())==0) {
+				CityArea tempCA=board.cityAreaObejctList.get(i);
+				tempCA.addMinion(p.getColor());
+			}
+			
+		}
+		
+		int totalplayers=Helper.playerList.size();
+		
+		boolean result=p.getPersonalityCard().checkWinningConditions(totalplayers, p, board);
+		assertTrue(result);
+	}
+
+}

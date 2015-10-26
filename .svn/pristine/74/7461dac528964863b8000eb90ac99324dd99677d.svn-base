@@ -1,0 +1,57 @@
+package JUnit;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+import source.Helper;
+import source.MapBoard;
+import source.Player;
+
+/**
+ * 
+ * @author c_sarvai
+ *
+ *<p>
+ *Junit test class to check winning conditions for <b>Dragon King of Arms</b> personality card.
+ *</br></br>
+ *<b>
+ *Condition:
+ *
+ *If at the start of your turn there are eight or more trouble makers on the board then you win the game immediately.
+ *</b>
+ *</br></br>
+ *
+ *<br/>
+ *Checking whether winning condition of that player is true or what.
+ *</p>
+ */
+public class WCforTM {
+
+	@Test
+	public void test() {
+		MapBoard board=new MapBoard();
+		Player p=new Player(board);
+		Player p1=new Player(board);
+		Helper.playerList.add(p);
+		Helper.playerList.add(p1);
+		board.placeInitialPieces(p);
+		board.placeInitialPieces(p1);
+		
+		for (int i = 0; i < Helper.personalitySet.size(); i++) {
+			if (Helper.personalitySet.get(i).cardName.equals("Dragon King of Arms")) {
+				p.setPersonalityCard(Helper.personalitySet.get(i));
+				break;
+			}
+		}
+		
+		
+		for (int i = 0; i < board.cityAreaObejctList.size(); i++) {
+			board.cityAreaObejctList.get(i).addTroubleMarkers();
+		}
+		
+		int totalplayers=Helper.playerList.size();
+		assertTrue(p.getPersonalityCard().checkWinningConditions(totalplayers, p, board));
+	}
+
+}

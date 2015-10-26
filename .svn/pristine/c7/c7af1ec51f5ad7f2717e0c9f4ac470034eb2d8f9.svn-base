@@ -1,0 +1,38 @@
+package JUnit;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+import source.Helper;
+import source.MapBoard;
+import source.Player;
+
+/**
+ * 
+ * @author c_sarvai
+ *
+ *<p>
+ *Junit class to test addMinion method.
+ *User can add one minion without any trouble.
+ *When user adds another minion in city area, a trouble maker is also placed in that area.
+ *When user removes a minion and at least one minion is in area, a trouble marker is removed from that area.
+ *<br/>
+ *<br/>
+ *Checking whether trouble marker flag of city area is true or not. It will be true if there are more than one minion in a particular city area.
+ *
+ *</p>
+ */
+public class AddMinion {
+
+	@Test
+	public void test() {
+		MapBoard board=new MapBoard();
+		Player p=new Player(board);
+		Helper.playerList.add(p);
+		board.cityAreaObejctList.get(11).addMinion(p.getColor());
+		board.cityAreaObejctList.get(11).addMinion(p.getColor());
+		assertTrue(board.cityAreaObejctList.get(11).troublemarkers);
+	}
+
+}

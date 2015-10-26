@@ -1,0 +1,263 @@
+package source;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Scanner;
+import java.util.Set;
+
+
+/**
+ * 
+ * @author c_sarvai
+ * <p>
+ * Base of game. This is main class.
+ * Initialize all city areas.
+ * Every city area has area number, name, information, cost and adjacent areas.
+ * Implements Serializable interface to save state of game.
+ * </p>
+ *
+ *@see Serializable
+ */
+@SuppressWarnings("serial")
+public class MapBoard implements Serializable{
+	CityArea theshades,dollysisters,thescours,dimwell,naphill,longwall,thehippo,dragonslanding,isleofgods,smallgods,sevensleepers,unrealestate;
+	public ArrayList<CityArea> cityAreaObejctList;
+	public ArrayList<CityArea> bankCityAreas;
+	
+	/**
+	 * Class constructor which initialize all city areas.
+	 * @see initializeCityAreas()
+	 */
+	
+	public MapBoard(){
+		initializeCityAreas();
+	}
+
+	/**
+	 * Initialize all city areas with proper information. Creates list of these areas. Add trouble makers in some of areas.
+	 * 
+	 * @see addTroubleMarkers()
+	 */
+	public void initializeCityAreas(){
+		cityAreaObejctList=new ArrayList<CityArea>();
+		
+		dollysisters=new DollySisters(1,"Dolly Sisters",6,new ArrayList<Integer>(Arrays.asList(new Integer[] {3,2,12})),this,"pay $3 and place one of minion in 'Dolly Sisters' or adjacent area.");
+		unrealestate=new UnrealEstate(2,"Unreal Estate",18,new ArrayList<Integer>(Arrays.asList(new Integer[] {1,3,4,10,11,12})),this,"Take one card from deck and discard one.");
+		dragonslanding=new DragonsLanding(3,"Dragon's Landing",12,new ArrayList<Integer>(Arrays.asList(new Integer[] {1,2,4})),this,"Take $2 from Bank.");
+		smallgods=new SmallGods(4,"Small Gods", 18,new ArrayList<Integer>(Arrays.asList(new Integer[] {2,3,5,6,10})),this,"pay $3 and ignore your piece which is affected by random event.");	
+		thescours=new TheScours(5,"The Scours",6,new ArrayList<Integer>(Arrays.asList(new Integer[] {4,6,7,8,10})),this,"Take $2 and discard One Player card.");
+		thehippo=new TheHippo(6,"The Hippo",12,new ArrayList<Integer>(Arrays.asList(new Integer[] {4,5,7})),this,"Take $2 from bank.");
+		theshades=new TheShades(7,"The Shades", 6,new ArrayList<Integer>(Arrays.asList(new Integer[] {8,6,5})),this,"Place one TM in 'The Shades' or adjacent area.");
+		dimwell=new Dimwell(8,"Dimwell",6,new ArrayList<Integer>(Arrays.asList(new Integer[] {5,7,9})),this,"pay $3 and place one of minion in 'Dimwell' or adjacent area.");		
+		longwall=new Longwall(9,"Longwall",12,new ArrayList<Integer>(Arrays.asList(new Integer[] {8,10,11})),this,"Take $1 from Bank.");		
+		isleofgods=new IsleOfGods(10,"Isle of Gods",12,new ArrayList<Integer>(Arrays.asList(new Integer[] {2,4,5,9,11})),this,"Pay $2 and remove one TM from board.");
+		sevensleepers=new SevenSleepers(11,"Seven Sleepers",18,new ArrayList<Integer>(Arrays.asList(new Integer[] {2,10,12})),this,"Take $3 from Bank.");
+		naphill=new NapHill(12,"Nap Hill",12,new ArrayList<Integer>(Arrays.asList(new Integer[] {11,2,1})),this,"Take $1 from Bank.");
+		
+		/* add all the objects to the arraylist */
+		cityAreaObejctList.add(dollysisters);
+		cityAreaObejctList.add(unrealestate);
+		cityAreaObejctList.add(dragonslanding);
+		cityAreaObejctList.add(smallgods);
+		cityAreaObejctList.add(thescours);
+		cityAreaObejctList.add(thehippo);
+		cityAreaObejctList.add(theshades);
+		cityAreaObejctList.add(dimwell);
+		cityAreaObejctList.add(longwall);
+		cityAreaObejctList.add(isleofgods);
+		cityAreaObejctList.add(sevensleepers);
+		cityAreaObejctList.add(naphill);
+		
+		bankCityAreas=new ArrayList<>();
+		bankCityAreas.addAll(cityAreaObejctList);
+		
+		Helper.adjucentToRiver.add(dollysisters);
+		Helper.adjucentToRiver.add(unrealestate);
+		Helper.adjucentToRiver.add(smallgods);
+		Helper.adjucentToRiver.add(thescours);
+		Helper.adjucentToRiver.add(theshades);
+		Helper.adjucentToRiver.add(dimwell);
+		Helper.adjucentToRiver.add(isleofgods);
+		Helper.adjucentToRiver.add(sevensleepers);
+		Helper.adjucentToRiver.add(naphill);
+		
+		
+	}
+	
+	/**
+	 * 
+	 * @param p - Player Object
+	 * 
+	 * <p>
+	 * On initial state, places minion in some areas.
+	 * </p>
+	 * 
+	 * @see addMinion()
+	 */
+	public void placeInitialPieces(Player p){
+		thescours.addMinion(p.getColor());
+		theshades.addMinion(p.getColor());
+		dollysisters.addMinion(p.getColor());
+	}
+
+	
+	/**
+	 * 
+	 * @param players - Number of players
+	 * 
+	 * <p>
+	 * Displays all information about all the city areas. Information also includes datas related to minions, buildings, demons, trolls and trouble makers.
+	 * </p>
+	 * 
+	 * @return Boolean- True if there are multiple players but not more than 5 else False.
+	 * 
+	 */
+	public boolean showMap(int players){
+		System.out.println("\n\tTable no. 2");
+		System.out.println("------------------------------------------------------------------------------------------------------------------");
+		System.out.println("|\t\t\t\t\t\tMAP BOARD                                                        |");
+		System.out.println("------------------------------------------------------------------------------------------------------------------");
+		System.out.println("|\tCost\tGr_Min\tRd_Min\tBl_Min\tYe_Min\tBulding\tDemons\tTrolls\tTroublemaker\tN0.\tName             |");
+		System.out.println("------------------------------------------------------------------------------------------------------------------");
+		if(players > 1 && players <5 ){
+		for (int i = 0; i < 12; i++) {
+			CityArea temp=cityAreaObejctList.get(i);
+			
+			System.out.println("\t"+temp.cost+"\t"+temp.minions.get("green")+"\t"+temp.minions.get("red")+"\t"+temp.minions.get("blue")+"\t"+temp.minions.get("yellow")+"\t"+temp.getBuilding()+"\t"+temp.demons+"\t"+temp.trolls+"\t"+temp.troublemarkers+"\t\t"+temp.cityAreaNumber+"\t"+temp.name);
+			
+		}
+		System.out.println("------------------------------------------------------------------------------------------------------------------");
+		return true;
+		}
+		else{return false;}
+	}
+	
+	/**
+	 * 
+	 * Checks if particular city area object has trouble makers. If so, it will add city area number into a list.
+	 * At last it will return that list.
+	 * 
+	 * @return ArrayList of city area number
+	 */
+	//returns arraylist of city area numbers that contains TM
+	public ArrayList<Integer> showTroubleMarkers(){
+		
+		ArrayList<Integer> returnnlist=new ArrayList<Integer>();
+		for (int i = 0; i < cityAreaObejctList.size(); i++) {
+			if (cityAreaObejctList.get(i).troublemarkers) {
+				returnnlist.add(cityAreaObejctList.get(i).cityAreaNumber);
+			}
+		}
+		return returnnlist;
+	}
+	
+	/**
+	 * 
+	 * 
+	 * @param areanumber - Integer input as area number
+	 * <p>
+	 * Check whether there is any city area in map with the given area number.
+	 * </p>
+	 * @return CityArea Object if there is cityarea with the given number.
+	 */
+	/*public void removeTroubleMarker(String area){
+		for (int i = 0; i < cityAreaObejctList.size(); i++) {
+			if ((cityAreaObejctList.get(i).name).equals(area)) {
+				cityAreaObejctList.get(i).troublemarkers=false;
+				System.out.println("TroubleMarker removed from "+area+" area");
+			}
+		}
+	}
+	*/
+	public CityArea getCityAreaByNumber(int areanumber){
+		for (int i = 0; i < cityAreaObejctList.size(); i++) {
+			CityArea cityarea=cityAreaObejctList.get(i);
+			if(cityarea.cityAreaNumber==areanumber)
+			{
+				return cityarea;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 *
+	 * 
+	 * @param p - Player Object
+	 * <p>
+	 * Method takes input from user to get city area.
+	 * Shows user information about minions and adjacent areas.
+	 * If all minions are on board, remove any minion and add.
+	 * 
+	 * </p>
+	 * @return CityArea object
+	 * 
+	 * @see getCityAreaByNumber()
+	 * @see removeMinion()
+	 * 
+	 */
+	/*this method will show the areas in which player has minions or its adjacent areas, and then it will return the cityarea that the user selects*/
+	public CityArea getCityAreaToAddMinion(Player p){ 
+		Scanner input=new Scanner(System.in);
+		HashSet<Integer> myset=new HashSet<Integer>();
+		System.out.println("Select city area to add minion");
+		if (p.getTotalminions()==12) {	/*this means none of the minions are on board,so you can place anywhere*/
+			for (int i = 0; i < cityAreaObejctList.size(); i++) {
+				System.out.println(cityAreaObejctList.get(i).cityAreaNumber+"- for area "+cityAreaObejctList.get(i).name);
+			}
+			int j=input.nextInt();
+			return (getCityAreaByNumber(j));
+		}
+		else if(p.getTotalminions()==0){ /*this means all minions are on board so first remove one minion and then add*/
+			for (int i = 0; i < cityAreaObejctList.size(); i++) {
+				if (cityAreaObejctList.get(i).minions.get(p.getColor())>=0) {
+					System.out.println(cityAreaObejctList.get(i).cityAreaNumber+"-for area "+cityAreaObejctList.get(i).name);
+				}
+			}
+			int j=input.nextInt();
+			getCityAreaByNumber(j).removeMinion(p.getColor());
+		}
+		
+		/*display cityareas with minions or adjacent areas and then return one city area selected by user*/
+		for (int i = 0; i < cityAreaObejctList.size(); i++) {			
+			if ((cityAreaObejctList.get(i).minions.get(p.getColor()))>0) {
+				myset.add(cityAreaObejctList.get(i).cityAreaNumber);
+				for (int j = 0; j < cityAreaObejctList.get(i).adjcentAreas.size(); j++) {
+					myset.add(cityAreaObejctList.get(i).adjcentAreas.get(j));
+				}
+				
+			}
+			
+		}
+		
+		Iterator it=myset.iterator();
+		while (it.hasNext()) {
+			int temp=(int) it.next();
+			System.out.println(temp+"- for "+getCityAreaByNumber(temp).name);
+		}
+		int j=input.nextInt();
+		return (getCityAreaByNumber(j));	
+	}
+	
+	/**
+	 * 
+	 * @param area - CityArea Object
+	 * <p>
+	 * Check whether given city area has any building or what
+	 * </p>
+	 * @return True if there is a building otherwise false.
+	 */
+	public boolean isThereABuilding(CityArea area){
+			if (!(area.getBuilding().equals("none"))) {
+				return true;
+			}			
+		return false;
+	}
+	
+	
+	
+}

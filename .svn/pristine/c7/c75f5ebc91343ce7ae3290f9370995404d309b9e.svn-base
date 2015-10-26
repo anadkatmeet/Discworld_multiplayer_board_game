@@ -1,0 +1,41 @@
+package JUnit;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+import source.Helper;
+import source.MapBoard;
+import source.Player;
+
+/**
+ * 
+ * @author c_sarvai
+ *
+ *<p>
+ *Junit class to test cards of user.
+ *When player cards are used, discard those cards from user's card list
+ *Here user has 5 cards. He uses two cards so there are 3 remains, if we discard used cards.
+ *<br/>
+ *<br/>
+ *Checking whether there are 3 remaining cards or what.
+ *
+ *</p>
+ */
+public class DiscardUsedCardsTest {
+
+	@Test
+	public void test() {
+		MapBoard board=new MapBoard();
+		Player p=new Player(board);
+		Helper.playerList.add(p);
+		p.playerCards.get(0).used=true;
+		p.playerCards.get(1).used=true;
+		System.out.println(p.playerCards.size());
+		p.discardUsedCards();
+		System.out.println(p.playerCards.size());
+		int size=p.playerCards.size();
+		assertEquals(3, size);
+	}
+
+}

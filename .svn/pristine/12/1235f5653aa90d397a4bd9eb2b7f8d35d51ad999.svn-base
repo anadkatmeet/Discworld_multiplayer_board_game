@@ -1,0 +1,38 @@
+package source;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class PlaceAMinionTest {
+
+	@Test
+	public void test() {
+		MapBoard board=new MapBoard();
+		Player p=new Player(board);
+		Helper.playerList.add(p);
+		board.placeInitialPieces(p);
+		
+		for (int i = 0; i < Helper.playerCardSet.size(); i++) {
+			if (Helper.playerCardSet.get(i).playerCardName.equals("Mr Gryle")) {
+				p.playerCards.add(Helper.playerCardSet.get(i));
+				break;
+			}
+		}
+		Player pl=new Player(board);
+		Helper.playerList.add(pl);
+		board.placeInitialPieces(pl);
+		for (int i = 0; i < Helper.playerCardSet.size(); i++) {
+			if (Helper.playerCardSet.get(i).playerCardName.equals("FreshStartClub")) {
+				pl.playerCards.add(Helper.playerCardSet.get(i));
+				break;
+			}
+		}
+		//Helper.placeMinion(board, p);
+		Start.PerformPlayerCard(board, p);
+		board.showMap(2);
+		
+		assertTrue(true);
+	}
+
+}

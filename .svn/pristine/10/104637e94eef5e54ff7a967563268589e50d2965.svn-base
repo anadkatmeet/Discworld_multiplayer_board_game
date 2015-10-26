@@ -1,0 +1,121 @@
+package PlayerCards;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+import source.Helper;
+/**
+ * 
+ * @author p_pandy
+ * <p> Player card,from Green cards, Rince wind extends the PlayerCardActions.
+ * It overrides two methods of the PlayerCardAction. It has two events to do  1>Scroll and 2>Play Another Card.
+ * </p>
+ * @see scroll()
+ * @see startPlayerCardActions() 
+ *
+ */
+public class Rincewind extends PlayerCardActions {
+	
+	// random event
+	// scroll
+	// play another card
+	public Rincewind(String name) {
+		playerCardName=name;
+		actionList=new ArrayList<String>();
+		actionList.add("Random Events");
+		actionList.add("Scroll - ('Move one of your minions from an area containing a trouble maker to an adjacent area')");
+		actionList.add("Play Another Card");
+	}
+	
+	@Override
+	public void scroll() {
+		//scroll
+		System.out.println("Select an area to move your minion.");
+		for (int i = 0; i < board.cityAreaObejctList.size(); i++) {
+			if(board.cityAreaObejctList.get(i).minions.get(p.getColor())>0 && board.cityAreaObejctList.get(i).troublemarkers)
+			{
+				System.out.println(board.cityAreaObejctList.get(i).cityAreaNumber+" for "+ board.cityAreaObejctList.get(i).name);
+			}
+		}
+		Scanner scan=new Scanner(System.in);
+		do
+		{
+			int num=scan.nextInt();
+			if(board.cityAreaObejctList.contains(board.getCityAreaByNumber(num)))
+			{
+				System.out.println("Select and adjucent area to move minion.");
+				for (int i = 0; i < board.getCityAreaByNumber(num).adjcentAreas.size(); i++) {
+					System.out.println(board.getCityAreaByNumber(num).adjcentAreas.get(i) + " for "+board.getCityAreaByNumber(board.getCityAreaByNumber(num).adjcentAreas.get(i)).name);
+				}
+				do
+				{
+					int number=scan.nextInt();
+					if(board.getCityAreaByNumber(num).adjcentAreas.contains(number))
+					{
+						board.getCityAreaByNumber(num).removeMinion(p.getColor());
+						board.getCityAreaByNumber(number).addMinion(p.getColor());
+						break;
+					}
+					else
+					{
+						System.out.println("Wrong Choice.");
+						continue;
+					}
+				}while(true);
+				break;
+			}
+			else
+			{
+				System.out.println("Wrong Choice.");
+				continue;
+			}
+		}while(true);
+	}
+
+
+
+	@Override
+	public void startPlayerCardActions() {
+		Scanner input=new Scanner(System.in);
+		
+		do {
+			//Random event
+			System.out.println("Executing random event...");
+			randonEvent(board);
+			break;
+		} while (true);
+	
+		
+		do {
+			System.out.println("Want to play 'Scroll' action?\n1-yes\n2-No");
+			int value=input.nextInt();
+			
+			if (!((value==1)||(value==2))) {
+				System.out.println("Wrong choice");
+				continue;
+			}
+			//perform scroll
+			if (value==1) {
+				scroll();
+			}
+			break;
+		} while (true);
+		
+		do {
+			System.out.println("Want to play 'Play Another Card' action?\n1-yes\n2-No");
+			int value=input.nextInt();
+			
+			if (!((value==1)||(value==2))) {
+				System.out.println("Wrong choice");
+				continue;
+			}
+			//perform Play Another Card
+			if (value==1) {
+				//Play Another Card
+			}
+			break;
+		} while (true);
+		
+	}
+
+}

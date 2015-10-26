@@ -1,0 +1,92 @@
+package JUnit;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+import source.CityArea;
+import source.Helper;
+import source.MapBoard;
+import source.Player;
+
+/**
+ * 
+ * @author c_sarvai
+ *
+ *<p>
+ *Junit test class to check winning conditions for areas.
+ *</br></br>
+ *<b>
+ *Condition:
+ *
+ *If at a start of your turn you have clear control of a certain number of areas then you win the game immediately. With two 
+ *players you need to control seven areas, with three players you need to control five areas, and with four players you need
+ *to control four areas.
+ *</b>
+ *<b>
+ *</br></br>
+ *Used in some personality cards.</br></br>
+ *Lord de Worde
+ *</b>
+ *</br></br>
+ *<b>
+ *Lord Selachii
+ *</b>
+ *</br></br>
+ *<b>
+ *Lord Rust
+ *</b>
+ *</br></br>
+ *
+ *Here we check this condition with <b>Lord de Worde</b> personality card.
+ *We added four players and one of them has four buildings in diffrent areas. It satisfies condition, so that player wins.
+ *</p>
+ *
+ *<br/>
+ *Checking whether winning condition of that player is true or what.
+ *</p>
+ */
+
+public class WCforAreaControl {
+
+	@Test
+	public void test() {
+		MapBoard board=new MapBoard();
+		Player p=new Player(board);
+		Player p1=new Player(board);
+		Helper.playerList.add(p);
+		Helper.playerList.add(p1);
+		Player p2=new Player(board);
+		Player p3=new Player(board);
+		Helper.playerList.add(p2);
+		Helper.playerList.add(p3);
+		
+		for (int i = 0; i < Helper.personalitySet.size(); i++) {
+			if (Helper.personalitySet.get(i).cardName.equals("Lord de Worde")) {
+				p.setPersonalityCard(Helper.personalitySet.get(i));
+				break;
+			}
+		}
+		
+		CityArea tempCA11=board.cityAreaObejctList.get(11);
+		tempCA11.addMinion(p.getColor());
+		tempCA11.addBuilding(p.getColor());
+		
+		CityArea tempCA10=board.cityAreaObejctList.get(10);
+		tempCA10.addMinion(p.getColor());
+		tempCA10.addBuilding(p.getColor());
+		
+		CityArea tempCA9=board.cityAreaObejctList.get(9);
+		tempCA9.addMinion(p.getColor());
+		tempCA9.addBuilding(p.getColor());
+		
+		CityArea tempCA8=board.cityAreaObejctList.get(8);
+		tempCA8.addMinion(p.getColor());
+		tempCA8.addBuilding(p.getColor());
+		
+		
+		int totalplayers=Helper.playerList.size();
+		assertTrue(p.getPersonalityCard().checkWinningConditions(totalplayers, p, board));
+	}
+
+}

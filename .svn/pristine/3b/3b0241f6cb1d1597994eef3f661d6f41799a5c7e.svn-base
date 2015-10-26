@@ -1,0 +1,34 @@
+package source;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class TheBeggarsGuildTest {
+
+	@Test
+	public void test() {
+		MapBoard board=new MapBoard();
+		Player p=new Player(board);
+		
+		Helper.playerList.add(p);
+		
+		for (int i = 0; i < Helper.playerCardSet.size(); i++) {
+			if (Helper.playerCardSet.get(i).playerCardName.equals("The Begger's Guild")) {
+				p.playerCards.add(Helper.playerCardSet.get(i));
+				break;
+			}
+		}
+		Player p1=new Player(board);
+		Helper.playerList.add(p1);
+		System.out.println(p1.playerCards);
+		Start.PerformPlayerCard(board, p);
+		//System.out.println(p1.interruptCollection);
+		//System.out.println(p1.playerCards);
+		Start.PerformPlayerCard(board, p1);
+		assertTrue(true);
+	
+	
+	}
+
+}

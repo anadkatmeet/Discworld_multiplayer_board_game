@@ -1,0 +1,63 @@
+package JUnit;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+import source.Helper;
+import source.MapBoard;
+import source.Player;
+import source.Start;
+
+public class GaspodeInterruptCheck {
+
+	@Test
+	public void test() {
+		MapBoard board=new MapBoard();
+		Player p=new Player(board);
+		for (int i = 0; i < Helper.playerCardSet.size(); i++) {
+			if (Helper.playerCardSet.get(i).playerCardName.equals("The Duckman")) {
+				p.playerCards.add(Helper.playerCardSet.get(i));
+				break;
+			}
+		}
+		
+		
+		Helper.playerList.add(p);
+		board.placeInitialPieces(p);
+		
+		
+		Player p1=new Player(board);
+		
+		for (int i = 0; i < Helper.playerCardSet.size(); i++) {
+			if (Helper.playerCardSet.get(i).playerCardName.equals("Gaspode")) {
+				p1.playerCards.add(Helper.playerCardSet.get(i));
+				p1.interruptCollection.add(Helper.playerCardSet.get(i));
+				break;
+			}
+		}
+		
+		Helper.playerList.add(p1);
+		board.placeInitialPieces(p);
+		/*for (int i = 0; i < Helper.playerCardSet.size(); i++) {
+			if (Helper.playerCardSet.get(i).playerCardName.equals("The Duckman")) {
+				p.playerCards.add(Helper.playerCardSet.get(i));
+				break;
+			}
+		}
+		for (int i = 0; i < Helper.playerCardSet.size(); i++) {
+			if (Helper.playerCardSet.get(i).playerCardName.equals("Gaspode")) {
+				p1.playerCards.add(Helper.playerCardSet.get(i));
+				p1.interruptCollection.add(Helper.playerCardSet.get(i));
+				break;
+			}
+		}*/
+		//System.out.println(p1.interruptCollection);
+		System.out.println(p1.playerCards);
+		Start.PerformPlayerCard(board, p);
+		//System.out.println(p1.interruptCollection);
+		System.out.println(p1.playerCards);
+		assertTrue(true);
+	}
+
+}

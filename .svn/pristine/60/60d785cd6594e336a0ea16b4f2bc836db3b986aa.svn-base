@@ -1,0 +1,486 @@
+package PlayerCards;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+
+
+
+import java.util.Random;
+import java.util.Scanner;
+
+import source.CityArea;
+import source.Helper;
+import source.MapBoard;
+import source.Player;
+import source.Start;
+/**
+ * 
+ * @author p_pandy
+ * <p>This class  is of Random events. It has two methods 1>getRandomEvent and 2>execute(MapBoard board)
+ * 2>execute(MapBoard board) is just declared here , it's been override in subclasses of RandomEvents.
+ * @param randomeventsset - It's ArrayList of Objects of RandomEvents
+ * 
+ * 
+ *
+ *
+ */
+public class RandomEvents implements Serializable {
+	//private static RandomEvents randomeventsobject=null;
+	String randomEventName;
+	static ArrayList<RandomEvents> randomeventsset;
+	
+	static
+	{
+		randomeventsset=new ArrayList<RandomEvents>();
+		//randomeventsset.add(new Fire("Fire"));
+		randomeventsset.add(new Fog("Fog"));
+		randomeventsset.add(new MysteriousMurders("MysteriousMurders"));
+		randomeventsset.add(new Riots("Riots"));
+		randomeventsset.add(new Subsidence("Subsidence"));
+		randomeventsset.add(new Trolls("Trolls"));
+		randomeventsset.add(new BloodyStupidJohnson("BloodyStupidJohnson"));
+		randomeventsset.add(new DemonsFromTheDungeonDimensions("DemonsFromTheDungeonDimensions"));
+		randomeventsset.add(new TheDragon("TheDragon"));
+		randomeventsset.add(new Earthquake("Earthquake"));
+		randomeventsset.add(new Explosion("Explosion"));
+		randomeventsset.add(new Flood("Flood"));
+	}
+	
+	
+	
+	
+	/**
+	 * <p> This method returns one random event randomly and removes it from the random events set.</p>
+	 * @param temp - it is the parameter which holds the object of RandomEvents
+	 * @return randomevents 
+	 */
+	public static RandomEvents getRandomEvent(){
+		Random random=new Random();
+		int value=random.nextInt(randomeventsset.size());
+		//int value=10;
+		RandomEvents temp=randomeventsset.get(value);
+		randomeventsset.remove(randomeventsset.get(value));
+		System.out.println("Random event generated is "+temp.randomEventName);
+		return temp;
+	}
+	/**
+	 * <p> Method <b>execute(MapBoard Board)</b> executes the random events. 
+	 * This method is overridden in subclasses of the random events.
+	 * Here, every random event is class. which has this method, they override according to the use.
+	 * </p> 
+	 *
+	 * @param board - Object of the MapBoard class
+	 */
+	public void execute(MapBoard board){}	
+	
+}
+/**
+ * 
+ * @author p_pandy
+ * <p>This class is of one of random events, Fire. 
+ * Which extends the super class RandomEvents.<p>
+ * @see execute(MapBoard board)
+ */
+class Fire extends RandomEvents{
+
+	/**
+	 * <p> this method returns the name of the random event.</p>
+	 * @param string - name of the random event as method parameter.
+	 */
+	public Fire(String string) {
+		randomEventName=string;
+	}
+
+	@Override
+	
+	public void execute(MapBoard board) {
+		System.out.println("Executing Fire random event");
+		//roll the die and check some rules
+        int dicenum=Helper.rollDice();
+        System.out.println("Result of rolling die is "+dicenum);
+        if(board.isThereABuilding(board.getCityAreaByNumber(dicenum)))
+        {
+        	board.getCityAreaByNumber(dicenum).removeBuilding(board.getCityAreaByNumber(dicenum).getBuilding());
+        	
+        }
+        else
+        {
+        	System.out.println("No Building in this area");
+        	return;
+        }
+        do {
+        	System.out.println("Rolling again...");
+        	int dice=Helper.rollDice();
+        	System.out.println("Result of rolling die is "+dice);
+        	if(board.getCityAreaByNumber(dicenum).adjcentAreas.contains(board.getCityAreaByNumber(dice).cityAreaNumber))
+        	{
+        		if(board.isThereABuilding(board.getCityAreaByNumber(dice)))
+                {
+                	board.getCityAreaByNumber(dice).removeBuilding(board.getCityAreaByNumber(dicenum).getBuilding());
+                	continue;
+                }
+                else
+                {
+                	System.out.println("No Building in this area");
+                	break;
+                }
+        	}	
+		} while (true);
+	}
+}
+class Fog extends RandomEvents{
+
+	public Fog(String string) {
+		randomEventName=string;
+	}
+
+	@Override
+	public void execute(MapBoard board) {
+		System.out.println("Executing Fog random event");
+		//draw and discard top five cards from the dec
+		for (int i = 0; i < 5; i++) {
+			if(Helper.playerCardSet.size()>0)
+			{
+				PlayerCardActions card= Helper.playerCardSet.get(0);
+				card.showPlayerCardDetails();
+				Helper.playerCardSet.remove(card);
+				Helper.playerCardSetDiscarded.add(card);
+				System.out.println("Player Card has been deleted.");
+			}
+		}
+	}
+	
+}
+class MysteriousMurders extends RandomEvents{
+
+	public MysteriousMurders(String string) {
+		// TODO Auto-generated constructor stub
+		randomEventName=string;
+	}
+
+	@Override
+	public void execute(MapBoard board) {
+		System.out.println("Executing MysteriousMurders random event");
+		//each player roll die and remove minion from the area
+		ArrayList<Player> players=Helper.playerList;
+		//CityAreaInterface cityareainterace=new CityAreaInterface();
+		for (int i = 0; i < players.size(); i++) {
+			int dicenum=Helper.rollDice();
+			CityArea cityarea=board.getCityAreaByNumber(dicenum);
+			if(cityarea.minions.get(players.get(i).getColor())>0)
+			{
+				ArrayList<Integer> temp=new ArrayList<>();
+				for (int j = 0; j < players.size(); j++) {
+					/*if(!(players.get(i).equals(players.get(j))))
+					{*/
+						if(cityarea.minions.get(players.get(j).getColor())>0){
+							System.out.println(j + " For "+players.get(j)+ " player");
+							temp.add(j);
+						}
+					//}
+				}
+				do
+				{
+					Scanner scan=new Scanner(System.in);
+					int input=scan.nextInt();
+					if(temp.contains(input))
+					{
+						Player pl=players.get(input);
+						Player currentPlayer=players.get(i);
+						
+						cityarea.removeMinion(pl.getColor());
+						Helper.checkAndCallFreshStartClubInterrupt(board, pl, currentPlayer);
+						break;
+					}
+					else
+					{
+						System.out.println("wrong Choice.");
+						continue;
+					}
+					
+				}while(true);
+			}
+			else
+			{
+				System.out.println(players.get(i).getColor()+" player doesn't have any minion in this city area");
+			}
+		}
+	}
+	
+}
+class Riots extends RandomEvents{
+
+	public Riots(String string) {
+		// TODO Auto-generated constructor stub
+		randomEventName=string;
+	}
+
+	@Override
+	public void execute(MapBoard board) {
+		System.out.println("Executing Riots random event");
+		//if there are more than 8 TM on board, game ends
+		ArrayList<Integer> tms= board.showTroubleMarkers();
+		if(tms.size()>=8)
+		{
+			System.out.println("Game Over\n Because there are 8 or more TM and you have played 'Riots' random event card");
+			//now check the player with maximum points wins
+			System.out.println("Checking for the winner..");
+			Helper.calculatePoints(board);
+			System.exit(0);
+		}
+	}
+}
+class Subsidence extends RandomEvents{
+
+	public Subsidence(String string) {
+		// TODO Auto-generated constructor stub
+		randomEventName=string;
+	}
+
+	@Override
+	public void execute(MapBoard board) {
+		System.out.println("Executing Subsidence random event");
+		//each player pay $2 for his each building or instead remove it
+		for(int i=0;i<board.cityAreaObejctList.size();i++){
+			if(!(board.cityAreaObejctList.get(i).getBuilding().equals("none"))){
+				Player p=Helper.getPlayerByColor(board.cityAreaObejctList.get(i).getBuilding());
+				if(Helper.payToBank(2, p)){
+					// paid
+					//so remove the building
+					
+				}else{
+					board.cityAreaObejctList.get(i).removeBuilding(board.cityAreaObejctList.get(i).getBuilding());
+					System.out.println("Not enough funds");
+				}
+			}
+		}
+	}
+}
+class Trolls extends RandomEvents{
+
+	public Trolls(String string) {
+		// TODO Auto-generated constructor stub
+		randomEventName=string;
+	}
+
+	@Override
+	public void execute(MapBoard board) {
+		System.out.println("Executing Trolls random event");
+		//roll three times and place troll in each area..place TM if there is a minion or troll already present
+		for (int i = 0; i < 3; i++) {
+			int number=Helper.rollDice();
+			System.out.println("Result of rolling die is "+number);
+			board.getCityAreaByNumber(number).addTrolls();
+		}
+	}
+}
+class BloodyStupidJohnson extends RandomEvents{
+
+	public BloodyStupidJohnson(String string) {
+		// TODO Auto-generated constructor stub
+		randomEventName=string;
+	}
+
+	@Override
+	public void execute(MapBoard board) {
+		System.out.println("Executing BloodyStupidJohnson random event");
+		int number=Helper.rollDice();
+		for (int i = 0; i < Helper.playerList.size(); i++) {
+			Player p=Helper .playerList.get(i);
+			CityArea tempCA=board.getCityAreaByNumber(number);
+//			if(p.cityAreasConquered.contains(tempCA))
+			if(p.getCityAreasConquered().contains(tempCA))
+			{
+				
+					System.out.println(p.getColor()+" player holds this city area card");
+//					p.cityAreasConquered.remove(tempCA);
+					p.getCityAreasConquered().remove(tempCA);
+					System.out.println(tempCA.name +" area discarded");
+					if(p.getTotalminions()<12)
+					{
+						if(tempCA.minions.get(p.getColor())>0)
+						{
+							tempCA.removeMinion(p.getColor());
+							return;
+						}
+				}
+			}
+		}
+
+		board.bankCityAreas.remove(board.getCityAreaByNumber(number));
+		System.out.println(board.getCityAreaByNumber(number).name +" area discarded");
+		
+	}
+	
+}
+class DemonsFromTheDungeonDimensions extends RandomEvents{
+
+	public DemonsFromTheDungeonDimensions(String string) {
+		// TODO Auto-generated constructor stub
+		randomEventName=string;
+	}
+
+	@Override
+	public void execute(MapBoard board) {
+		System.out.println("Executing DemonsFromTheDungeonDimensions random event");
+		//roll 4 times and place demon
+		for (int i = 0; i < 4; i++) {
+			int number=Helper.rollDice();
+			System.out.println("Result of rolling die is "+number);
+			board.getCityAreaByNumber(number).addDemons();
+		}
+		
+	}
+}
+class TheDragon extends RandomEvents{
+
+	public TheDragon(String string) {
+		// TODO Auto-generated constructor stub
+		randomEventName=string;
+	}
+
+	@Override
+	public void execute(MapBoard board) {
+		System.out.println("Executing The Dragon random event");
+		//roll the die once and remove everything from that area
+		int number=Helper.rollDice();
+		System.out.println("Result of rolling die is "+number);
+		CityArea temp=board.getCityAreaByNumber(number);
+		
+		//remove building if there is one
+		if (!(temp.getBuilding().equals("none"))) {
+			temp.removeBuilding(temp.getBuilding());
+		}
+		
+		//remove TM if there is one
+		temp.removeTroubleMarkers();
+		
+		//remove all minions
+		for (int i = 0; i < Helper.color.size(); i++) {	//for each color
+				for (int j = 0; j < temp.minions.get(Helper.color.get(i)); j++) {	//call removeminion as many minions are there
+					temp.removeMinion(Helper.color.get(i));
+				}
+			
+		}
+		
+		//remove demons
+		for (int i = 0; i < temp.demons; i++) {
+			temp.removeDemons();
+		}
+		
+		//remove trolls
+		for (int i = 0; i < temp.trolls; i++) {
+			temp.removeTrolls();
+		}
+		
+	}
+	
+}
+class Earthquake extends RandomEvents{
+
+	public Earthquake(String string) {
+		// TODO Auto-generated constructor stub
+		randomEventName=string;
+	}
+
+	@Override
+	public void execute(MapBoard board) {
+		System.out.println("Executing Earthquake random event");
+		//roll the die 2 times and remove buildings
+		for (int i = 0; i < 2; i++) {
+			int number=Helper.rollDice();
+			System.out.println("Result of rolling die is "+number);
+			CityArea temp=board.getCityAreaByNumber(number);
+			//if there is a building,remove it
+			if (!(temp.getBuilding().equals("none"))) {
+				temp.removeBuilding(temp.getBuilding());
+			}
+			
+		}
+	}
+	
+}
+class Explosion extends RandomEvents{
+
+	public Explosion(String string) {
+		// TODO Auto-generated constructor stub
+		randomEventName=string;
+	}
+
+	@Override
+	public void execute(MapBoard board) {
+		System.out.println("Executing Explosion random event");
+		//roll the die once and remove buildings
+		int number=Helper.rollDice();
+		System.out.println("Result of rolling die is "+number);
+		CityArea temp=board.getCityAreaByNumber(number);
+		
+		
+		//if there is a building,remove it
+		if (!(temp.getBuilding().equals("none"))) {
+			//now check if this color's player has small gods
+			Player ptemp=Helper.getPlayerByColor(temp.getBuilding());
+			if(ptemp.getCityAreasConquered().contains(board.getCityAreaByNumber(4))){	//check for small gods
+				int initialmoney=ptemp.getPlayermoney();
+				board.getCityAreaByNumber(4).executeCityAreaMethods(board, ptemp);
+				if (ptemp.getPlayermoney()==(initialmoney-3)) {
+					System.out.println(ptemp.getColor()+" player played small gods city area power, so cant remove this building");
+					return;
+				}
+			}
+			
+			temp.removeBuilding(temp.getBuilding());
+		}
+	}
+	
+}
+class Flood extends RandomEvents{
+
+	public Flood(String string) {
+		// TODO Auto-generated constructor stub
+		randomEventName=string;
+	}
+
+	@Override
+	public void execute(MapBoard board) {
+		System.out.println("Executing Flood random event");
+		CityArea tempCA1=board.getCityAreaByNumber(Helper.rollDice());
+		CityArea tempCA2=board.getCityAreaByNumber(Helper.rollDice());
+		ArrayList<CityArea> affectedAreas=new ArrayList<>();
+		affectedAreas.add(tempCA1);
+		affectedAreas.add(tempCA2);
+		for (int i = 0; i < affectedAreas.size(); i++) {
+			if(Helper.adjucentToRiver.contains(affectedAreas.get(i)))
+			{
+				for (int j = 0; j <Helper.playerList.size(); j++) {
+					if(affectedAreas.get(i).minions.get(Helper.playerList.get(j))>0)
+					{
+						affectedAreas.get(i).removeMinion(Helper.playerList.get(j).getColor());
+						System.out.println("There is a Flood.\nPlease Select an area to move your Minion.");
+						for (int j2 = 0; j2 < affectedAreas.get(i).adjcentAreas.size(); j2++) {
+							System.out.println(affectedAreas.get(i).adjcentAreas.get(j2)+" for "+board.getCityAreaByNumber(affectedAreas.get(i).adjcentAreas.get(j2)));
+						}
+						Scanner scan=new Scanner(System.in);
+						do
+						{
+							int num=scan.nextInt();
+							if(affectedAreas.get(i).adjcentAreas.contains(num))
+							{
+								Helper.placeMinion(board,Helper.playerList.get(j));
+								break;
+							}
+							else
+							{
+								System.out.println("Wrong Choice.");
+								continue;
+							}
+						}while(true);
+					}
+				}
+			}
+		}
+		
+	}
+	
+}
+

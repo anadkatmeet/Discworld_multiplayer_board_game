@@ -1,0 +1,34 @@
+package source;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class RandomEventTest {
+
+	@Test
+	public void test() {
+		MapBoard board=new MapBoard();
+		Player p=new Player(board);
+		Helper.playerList.add(p);
+		board.placeInitialPieces(p);
+		for (int i = 0; i < Helper.playerCardSet.size(); i++) {
+			if (Helper.playerCardSet.get(i).playerCardName.equals("Drumknott")) {
+				p.playerCards.add(Helper.playerCardSet.get(i));
+				break;
+			}
+		}
+		//Player pl=new Player(board);
+		//Helper.playerList.add(pl);
+		//board.placeInitialPieces(pl);
+		//Helper.takeFromBank(10, pl);
+		//board.getCityAreaByNumber(4).addMinion(pl.getColor());
+		//board.getCityAreaByNumber(4).addBuilding(pl.getColor());
+		//board.showMap(2);
+		p.showPlayer();
+		//pl.showPlayer();
+		Start.PerformPlayerCard(board, p);
+		assertTrue(true);
+	}
+
+}

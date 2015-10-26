@@ -1,0 +1,35 @@
+package JUnit;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+import source.Helper;
+import source.MapBoard;
+import source.Player;
+
+/**
+ * 
+ * @author c_sarvai
+ *
+ *<p>
+ *Junit test class to check loan from bank.
+ *Every player is given 10$ at initial state.
+ *Player can take loan from bank. Amount is specified in card condition.
+ *Here, player takes loan of 5$.
+ *<br/>
+ *<br/>
+ *Checking whether total number of money player has, is 15 or what.
+ *</p>
+ */
+
+public class TakeFromBank {
+
+	@Test
+	public void test() {
+		Player p=new Player(new MapBoard(),"red");
+		Helper.takeFromBank(5, p);
+		assertEquals(15, (p.getPlayermoney()));
+	}
+
+}

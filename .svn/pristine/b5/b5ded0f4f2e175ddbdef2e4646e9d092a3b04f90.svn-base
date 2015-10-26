@@ -1,0 +1,24 @@
+package JUnit;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+import source.Helper;
+import source.MapBoard;
+import source.Player;
+
+public class PayToBankFailureTest {
+
+	@Test
+	public void test() {
+		MapBoard board=new MapBoard();
+		Player p=new Player(board);
+		Helper.payToBank(5, p);
+		Helper.payToBank(5, p);
+		boolean result=Helper.payToBank(1, p);
+		
+		assertFalse(result);
+	}
+
+}

@@ -1,0 +1,209 @@
+package source;
+
+import java.io.Serializable;
+
+import PlayerCards.CMOTDibbler;
+import PlayerCards.CaptainCarrot;
+import PlayerCards.DrCruces;
+import PlayerCards.DrWhiteface;
+import PlayerCards.Drumknott;
+import PlayerCards.FoulOleRon;
+import PlayerCards.FreshStartClub;
+import PlayerCards.Gaspode;
+import PlayerCards.GimletsDwarfDelicatessen;
+import PlayerCards.Groat;
+import PlayerCards.HargasHouseOfRibs;
+import PlayerCards.HarryKing;
+import PlayerCards.HereNnow;
+import PlayerCards.Hex;
+import PlayerCards.HistoryMonks;
+import PlayerCards.InigoSkimmer;
+import PlayerCards.LeonardOfQuirm;
+import PlayerCards.Librarian;
+import PlayerCards.Modo;
+import PlayerCards.MrBent;
+import PlayerCards.MrBoggis;
+import PlayerCards.MrGryle;
+import PlayerCards.MrPinAndmrTulip;
+import PlayerCards.MrsCake;
+import PlayerCards.NobbyNobbs;
+import PlayerCards.PinkPussyCatClub;
+import PlayerCards.PlayerCardActions;
+import PlayerCards.QueenMolly;
+import PlayerCards.Rincewind;
+import PlayerCards.RosiePalm;
+import PlayerCards.SacharissaCripslock;
+import PlayerCards.SergeantAngua;
+import PlayerCards.ShonkyShop;
+import PlayerCards.TheAgonyAunts;
+import PlayerCards.TheAnkhMorporkSunshineDragonSanctury;
+import PlayerCards.TheBankOfAnkhMorpork;
+import PlayerCards.TheBeggersGuild;
+import PlayerCards.TheDuckMan;
+import PlayerCards.TheDysk;
+import PlayerCards.TheFireBrigade;
+import PlayerCards.TheFoolsGuild;
+import PlayerCards.TheMendedDrum;
+import PlayerCards.TheOperaHouse;
+import PlayerCards.ThePeeledNuts;
+import PlayerCards.TheRoyalMint;
+import PlayerCards.TheSeamstressesGuild;
+import PlayerCards.TheThievesGuild;
+import PlayerCards.WallaceSonky;
+import PlayerCards.ZorgoTheRetroPhrenologist;
+
+public class PlayerCardsFactory extends Helper implements Serializable {
+	public PlayerCardActions getPlayerCardFromFactory(String name){
+		
+		if(name.equals("Mr Boggis"))
+			return new MrBoggis(name);
+		
+		else if(name.equals("Gaspode"))
+			return new Gaspode(name);
+		
+		else if(name.equals("FreshStartClub"))
+			return new FreshStartClub(name);
+		
+		else if(name.equals("The Duckman"))
+			return new TheDuckMan(name);
+		
+		else if(name.equals("Mr Bent"))
+			return new MrBent(name);
+		
+		else if(name.equals("The Begger's Guild"))
+			return new TheBeggersGuild(name);
+		
+		else if(name.equals("The Bank Of Ankh Morpork"))
+			return new TheBankOfAnkhMorpork(name);
+		
+		else if(name.equals("The Ankh Morpork Sunshine Dragon Sancturay"))
+			return new TheAnkhMorporkSunshineDragonSanctury(name);
+		
+		else if(name.equals("Sergeant Angua"))
+			return new SergeantAngua(name);
+		
+		else if(name.equals("The Agony Aunts"))
+			return new TheAgonyAunts(name);
+		
+		else if(name.equals("The Dysk"))
+			return new TheDysk(name);
+		
+		else if(name.equals("Drumknott"))
+			return new Drumknott(name);
+		
+		else if(name.equals("CMOT Dibbler"))
+			return new CMOTDibbler(name);
+		
+		else if(name.equals("Dr Cruces"))
+			return new DrCruces(name);
+		
+		else if(name.equals("Captain Carrot"))
+			return new CaptainCarrot(name);
+		
+		else if(name.equals("Mrs Cake"))
+			return new MrsCake(name);
+		
+		else if(name.equals("Groat"))
+			return new Groat(name);
+		
+		else if(name.equals("Gimlet's Dwarf Delicatessen"))
+			return new GimletsDwarfDelicatessen(name);
+		
+		else if(name.equals("The Fool's Guild"))
+			return new TheFoolsGuild(name);
+		
+		else if(name.equals("The Fire Brigde"))
+			return new TheFireBrigade(name);
+		
+		else if(name.equals("Inigo Skimmer"))
+			return new InigoSkimmer(name);
+		
+		else if(name.equals("History Monks"))
+			return new HistoryMonks(name);
+		
+		else if(name.equals("Hex"))
+			return new Hex(name);
+		
+		else if(name.equals("Here'n'Now"))
+			return new HereNnow(name);
+		
+		else if(name.equals("Harry King"))
+			return new HarryKing(name);
+		
+		else if(name.equals("Harga's House Of Ribs"))
+			return new HargasHouseOfRibs(name);
+		
+		else if(name.equals("Mr Gryle"))
+			return new MrGryle(name);
+		
+		else if(name.equals("The Peeled Nuts"))
+			return new ThePeeledNuts(name);
+		
+		else if(name.equals("The Opera House"))
+			return new TheOperaHouse(name);
+		
+		else if(name.equals("Nobby Nobbs"))
+			return new NobbyNobbs(name);
+		
+		else if(name.equals("Modo"))
+			return new Modo(name);
+		
+		else if(name.equals("The Mended Drum"))
+			return new TheMendedDrum(name);
+		
+		else if(name.equals("Librarian"))
+			return new Librarian(name);
+		
+		else if(name.equals("Leonard Of Quirm"))
+			return new LeonardOfQuirm(name);
+		
+		else if(name.equals("Shonky Shop"))
+			return new ShonkyShop(name);
+		
+		else if(name.equals("Sacharissa Cripslock"))
+			return new SacharissaCripslock(name);
+		
+		else if(name.equals("Rosie Palm"))
+			return new RosiePalm(name);
+		
+		else if(name.equals("Rincewind"))
+			return new Rincewind(name);
+		
+		else if(name.equals("The Royal Mint"))
+			return new TheRoyalMint(name);
+		
+		else if(name.equals("Queen Molly"))
+			return new QueenMolly(name);
+		
+		else if(name.equals("Pink Pussy Cat Club"))
+			return new PinkPussyCatClub(name);
+		
+		else if(name.equals("Zorgo the Retro-phernologist"))
+			return new ZorgoTheRetroPhrenologist(name);
+		
+		else if(name.equals("Dr Whiteface"))
+			return new DrWhiteface(name);
+		
+		else if(name.equals("Wallace Sonky"))
+			return new WallaceSonky(name);
+		
+		else if(name.equals("The Seamstresses' Guild"))
+			return new TheSeamstressesGuild(name);
+		
+		else if(name.equals("Mr Pin & Mr Tulip"))
+			return new MrPinAndmrTulip(name);
+		
+		else if(name.equals("The Thieves' Guild"))
+			return new TheThievesGuild(name);
+		
+		else if(name.equals("Foul Ole Ron"))
+			return new FoulOleRon(name);
+		
+		else
+		{
+			System.out.println(name);
+			return null;
+		}
+		
+	}
+}

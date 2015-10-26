@@ -1,0 +1,35 @@
+package JUnit;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+import source.Helper;
+
+/**
+ * 
+ * @author c_sarvai
+ *
+ *<p>
+ *Junit class to test BankMoney variables.
+ *Initially when Helper class initiates, it assigns number of coins.
+ *Initially coins of 5$ = 17 and coins of 1$ = 35
+ *<br/>
+ *<br/>
+ *Checking whether total number of 5 * 17 and 35 is 120 or not.
+ *
+ *</p>
+ */
+
+public class BankMoneyTest {
+
+	@Test
+	public void test() {
+		Helper help = new Helper();
+		assertEquals(120, (help.getBankmoney()));
+	}
+
+}
+
+
+

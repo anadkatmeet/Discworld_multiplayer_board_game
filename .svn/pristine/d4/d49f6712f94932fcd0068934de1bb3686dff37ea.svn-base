@@ -1,0 +1,16 @@
+package JUnit;
+
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
+
+@RunWith(Suite.class)
+@SuiteClasses({  PayToBankFailureTest.class,
+		PayToBankTest.class, PlayerMinionTest.class, PlayerMoneyTest.class,
+		RemoveMinion.class, RollDieTest.class, TakeFromBank.class,
+		WCforAreaControl.class, WCforChryoprase.class,
+		WCforCommanderVimes.class, WCforMinionControl.class, WCforTM.class,
+		WontAddBuildingIfThereIsTM.class })
+public class AllTests {
+
+}
